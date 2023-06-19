@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .flx{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .mg-lft{
+            display: flex;
+            margin-left: auto;
+        }
+        .invo-hd{
+            font-size: 3rem;
+        }
+        .invo-lg{
+            height:5rem;
+        }
+        ul{
+            list-style: none;
+            font-size: 1.4rem;
+        }
+        span{
+            font-size: 2rem;
+        }
+        .invo-info{
+            display: flex;
+            flex-direction: column;
+        }
+        .invo-tb{
+            margin:0 8%;
+            width: 80%;
+            border:0.2rem solid black;
+        }
+        .tb-row{
+            font-size: 1.5rem;
+            padding:0 2%;
+            
+        }
+        .bor-btm{
+            border-bottom: 0.2rem solid black;
+        }
+        .bor-all{
+            border:0.2rem solid black;
+        }
+        .container{
+            padding:2%;
+        }
+        @media screen and (max-width: 670px) {
+            .invo-hd{
+                font-size: 3rem;
+            }
+            .invo-lg{
+                height:2rem;
+            }
+            ul{
+                list-style: none;
+                font-size: 1rem;
+            }
+            .tb-row{
+                font-size: 0.8rem;
+                padding:0 2%;
+                
+            }
+            span{
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cont-hd flx">
+            <div class="invo-hd">
+                INVOICE
+            </div>
+            <a class="mg-lft" href="{% url 'home' %}"><div class="invo-lg mg-lft"><img src='{% static 'img/logo.png' %}' alt="logo"/></div></a>
+        </div>
+        <div class="invo-cont-info flx">
+            <div class="cont-add">
+                <div class="cmp-add">
+                    
+                    <ul>
+                        <li><span>FROM</span></li>
+                        <li>23, Mapple Street,</li>
+                        <li>California,</li>
+                        <li>America.</li>
+                    </ul>
+                </div>
+                <div class="ship-add">
+                    
+                    <ul>
+                        <li><span>Shipping address</span></li>
+                        <li>{{ user.name }}</li>
+                        <li>{{ user.house }}</li>
+                        <li>{{ user.area }}, {{ user.city }}, {{ user.state }}</li>
+                        <li>{{ user.country }}</li>
+                    </ul>
+                </div>
+                <div class="invo-no flx" >
+                    <span class="" style="font-size: 1.5rem;">INVOICE Id:</span>
+                    <span style="font-size: 1.5rem;">{{ord.razor_pay_order_id}}</span>
+                </div>
+            </div>
+            <div class="invo-info mg-lft">
+                <div class="invo-no flx">
+                    <span class="">INVOICE #:</span>
+                    <span>100</span>
+                </div>
+                <div class="invo-dt flx">
+                    <span class="">INVOICE Date:</span>
+                    <span>{{ ord.created.date }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="invo-tb" style="margin-top:2%;">
+            <div class="tb-row flx bor-btm">
+                <div class="tb-col-lt" style="font-size: 2rem;">DECRIPTION</div>
+                <div class="tb-col-rt mg-lft"  style="font-size: 2rem;">AMOUNT</div>
+            </div>
+            {% for product in ord.ord_prod.all %}
+            <div class="tb-row flx bor-btm">
+                <div class="tb-col-lt">{{ product }}</div>
+                <div class="tb-col-rt mg-lft">RS.{{product.prod_price}}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="invo-amt">
+            <div class="invo-subt "> 
+                <ul class="flx mg-lft">
+                    <li>SUBTOTAL:</li>
+                    <li style="padding-left:1rem;">RS.{{total_price}}</li>
+                </ul>
+            </div>
+            {% comment %} <div class="invo-tax">
+                <ul class="flx mg-lft">
+                    <li>GST 12%:</li>
+                    <li style="padding-left:1.4rem;">RS.10000</li>
+                </ul>
+            </div> {% endcomment %}
+        </div>
+        <div class="invo-amt-tl">
+            <div class="tb-row flx bor-all">
+                <div class="tb-col-lt" style="font-size: 2rem;">TOTAL</div>
+                <div class="tb-col-rt mg-lft"  style="font-size: 2rem;">RS.{{total_price}}</div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

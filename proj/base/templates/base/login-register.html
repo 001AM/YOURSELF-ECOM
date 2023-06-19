@@ -1,0 +1,142 @@
+{% include 'main.html' %}
+{% block content %}
+    <div class="register_container">
+        {% if page == 'login' %}
+        <div class="login_container">
+            <div class="grid-box-form"> 
+                <div class="grid-box-form-front" style="background-color:white">
+                    <div class="form_title">
+                        <h1>Login</h1>
+                        {% comment %} <hr> {% endcomment %}
+                    </div>
+                    <div class="regform_cont">
+                        <form class="form" method="POST" action="">
+                            {% csrf_token %}
+                            <div class="form_cont">
+                                <label>Username</label>
+                                <input id="username" name="username" type="text" placeholder=""/>
+                            </div>
+                            <div class="form_cont">
+                                <label>Password</label>
+                                <input id="password" name="password" type="password" placeholder=""/>
+                            </div>
+                            {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+
+                            <div class="sub-btn">
+                                <div class="grid-box-text">
+                                    <div class="grid-box-text-front">
+                                        <button value="submit">Login</button>
+                                    </div>
+                                    <div class="grid-box-text-back">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="reg_footer">
+                            <p>Haven't signup what are you doing ??</p>
+                            <a href={% url 'register' %} style="color:darkblue"> Signup </a>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                  
+                
+                </div>
+                <div class="grid-box-form-back">
+                </div>
+          
+            </div>
+            
+        </div>   
+        {% else %}
+            
+        <div class="signup">
+            
+            <div class="grid-box-form"> 
+                <div class="grid-box-form-front" style="background-color:white">
+                    <div class="form_title">
+                        <h1>Signup</h1>
+                    </div>
+                    <div class="regform_cont">
+                        
+                        <form class="form" method="POST" action="">
+                            {% csrf_token %}
+                            {% for field in signupform %}
+                            <div class="form_cont">
+                                <label>{{ field.label }}</label>
+                                {{field}}
+                            </div>
+                            {% endfor %}
+                            
+
+                            
+
+
+                            <div class="sub-btn">
+                                <div class="grid-box-text">
+                                    <div class="grid-box-text-front">
+                                        <button value="submit">Signup</button>
+                                    </div>
+                                    <div class="grid-box-text-back">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="reg_footer">
+                            <p> Have account already nice just..</p>
+                            <a href={% url 'login' %} style="color:darkblue"> Login </a>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                  
+                
+                </div>
+                <div class="grid-box-form-back">
+                </div>
+                {% if messages %}
+                
+               
+                <div class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Messages</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="messages">
+                                    {% for message in messages %}
+                                        <div class="alert alert-sm" role="alert">
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <script>
+                    $(document).ready(function() {
+                        $('.modal').modal('show');
+                    });
+                </script>
+                {% endif %}
+        </div>
+    <div>
+        {% endif %}
+{% endblock content %}

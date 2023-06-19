@@ -1,0 +1,92 @@
+{% load static %}
+<header class="header header--loggedIn">
+    <div class="nav-container border-box dropdown">
+        <ul>
+            <li onclick="myFunction()" class="dropbtn dropdown-button">Eras</li>
+            <li onclick="viynalmenu()" class="dropbtn dropdown-button">Viynls</li>
+            <li onclick="cassestsmenu()" class="dropbtn dropdown-button">Cassettes</li>
+            <li onclick="postermenu()" class="dropbtn dropdown-button">Posters</li>
+            <li onclick="myFunction()" class="dropbtn dropdown-button">Collab</li>
+            <li onclick="searchmenu()"><svg xmlns="http://www.w3.org/2000/svg" width="32.402" height="32"viewBox="0 0 101 101" id="search"><path d="M63.3 59.9c3.8-4.6 6.2-10.5 6.2-17 0-14.6-11.9-26.5-26.5-26.5S16.5 28.3 16.5 42.9 28.4 69.4 43 69.4c6.4 0 12.4-2.3 17-6.2l20.6 20.6c.5.5 1.1.7 1.7.7.6 0 1.2-.2 1.7-.7.9-.9.9-2.5 0-3.4L63.3 59.9zm-20.4 4.7c-12 0-21.7-9.7-21.7-21.7s9.7-21.7 21.7-21.7 21.7 9.7 21.7 21.7-9.7 21.7-21.7 21.7z"></path></svg></li>
+            <li><a href="{% url 'userprofile'%}" class='mg-tp'><svg xmlns="http://www.w3.org/2000/svg" width="32.402" height="32"viewBox="0 0 256 256" id="user"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="96" r="64" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></circle><path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" d="M30.989,215.99064a112.03731,112.03731,0,0,1,194.02311.002"></path></svg></a></li>
+            <li><a href="{% url 'cart'%}"><svg xmlns="http://www.w3.org/2000/svg" width="32.402" height="32" viewBox="0 0 32.402 32" id="cart"><path d="M6 30a2 2 1080 1 0 4 0 2 2 1080 1 0-4 0zm18 0a2 2 1080 1 0 4 0 2 2 1080 1 0-4 0zM-.058 5a1 1 0 0 0 1 1H3.02l1.242 5.312L6 20c0 .072.034.134.042.204l-1.018 4.58A.997.997 0 0 0 6 26h22.688a1 1 0 0 0 0-2H7.248l.458-2.06c.1.016.19.06.294.06h18.23c1.104 0 1.77-.218 2.302-1.5l3.248-9.964C32.344 8.75 31.106 8 30 8H6c-.156 0-.292.054-.438.088l-.776-3.316A1 1 0 0 0 3.812 4H.942a1 1 0 0 0-1 1zm6.098 5h23.81l-3.192 9.798c-.038.086-.07.148-.094.19-.066.006-.17.012-.334.012H8v-.198l-.038-.194L6.04 10z"></path></svg></a></li>
+            <div class="cart_count" id="cart">{{ cart_count }}</div>
+        </ul>
+    </div>
+    <div class="search" id="searchmenu">
+        <form method="GET" action="{% url 'search'%}">
+            <input type="text" name="s" class="searchtag">
+            <input type="hidden" name="c" value="{{ title }}">
+        </form>
+    </div>
+    <div id="myDropdown" class=" dropdown-menu dropdown-content" >
+        <ul>
+            {% for collection in collections  %}
+            <li><a class="dropdown-link border-box-bottom" href="{% url 'store' collection.category %}">{{ collection.category }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="myDropdownv" class=" dropdown-menu dropdown-content" >
+        <ul>
+            {% for collection in collections  %}
+            <li><a class="dropdown-link border-box-bottom" href="{% url 'store' pk=collection.category pk1='Viynls' %}">{{ collection.category }} Viynls</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="myDropdownp" class=" dropdown-menu dropdown-content" >
+        <ul>
+            {% for collection in collections  %}
+            <li><a class="dropdown-link border-box-bottom" href="{% url 'store' pk=collection.category pk1='Posters' %}">{{ collection.category }} Posters</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="myDropdownc" class=" dropdown-menu dropdown-content" >
+        <ul>
+            {% for collection in collections  %}
+            <li><a class="dropdown-link border-box-bottom" href="{% url 'store' pk=collection.category pk1='Cassettes' %}">{{ collection.category }} Cassettes</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div >
+        <div class="nav-mobile-container  ">
+            <div class="searchmob" id="searchmobmenu">
+                <form method="GET" action="{% url 'search'%}">
+                    <input type="text" name="s" class="searchtag">
+                </form>
+            </div>
+            <ul class="nav-grid-cont"> 
+                <li><a href="{% url 'home' %}"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 30 30" version="1.1">
+                    <g id="surface1">
+                    <path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 28.695312 15.976562 C 28.371094 15.976562 28.042969 15.847656 27.78125 15.621094 L 15 3.128906 L 2.21875 15.621094 C 1.695312 16.109375 0.878906 16.109375 0.359375 15.585938 C -0.128906 15.066406 -0.128906 14.25 0.390625 13.726562 L 14.085938 0.359375 C 14.609375 -0.128906 15.390625 -0.128906 15.914062 0.359375 L 29.609375 13.726562 C 30.128906 14.21875 30.128906 15.066406 29.640625 15.585938 C 29.378906 15.847656 29.023438 15.976562 28.695312 15.976562 Z M 25.824219 28.695312 L 25.824219 15.945312 C 25.824219 15.226562 25.238281 14.640625 24.523438 14.640625 C 23.804688 14.640625 23.21875 15.226562 23.21875 15.945312 L 23.21875 27.390625 L 19.140625 27.390625 L 19.140625 20.414062 C 19.140625 19.46875 18.359375 18.683594 17.414062 18.683594 L 12.585938 18.683594 C 11.640625 18.683594 10.859375 19.46875 10.859375 20.414062 L 10.859375 27.390625 L 6.78125 27.390625 L 6.78125 15.945312 C 6.78125 15.226562 6.195312 14.640625 5.476562 14.640625 C 4.761719 14.640625 4.175781 15.226562 4.175781 15.945312 L 4.175781 28.695312 C 4.175781 29.414062 4.761719 30 5.476562 30 L 12.164062 30 C 12.878906 30 13.46875 29.414062 13.46875 28.695312 L 13.46875 21.292969 L 16.566406 21.292969 L 16.566406 28.695312 C 16.566406 29.414062 17.152344 30 17.871094 30 L 24.554688 30 C 25.273438 30 25.824219 29.414062 25.824219 28.695312 Z M 25.824219 28.695312 "/>
+                    </g>
+                    </svg></a></li>
+                <li onclick="searchmobmenu()"><svg xmlns="http://www.w3.org/2000/svg" width="32.402" height="32"viewBox="0 0 101 101" id="search"><path d="M63.3 59.9c3.8-4.6 6.2-10.5 6.2-17 0-14.6-11.9-26.5-26.5-26.5S16.5 28.3 16.5 42.9 28.4 69.4 43 69.4c6.4 0 12.4-2.3 17-6.2l20.6 20.6c.5.5 1.1.7 1.7.7.6 0 1.2-.2 1.7-.7.9-.9.9-2.5 0-3.4L63.3 59.9zm-20.4 4.7c-12 0-21.7-9.7-21.7-21.7s9.7-21.7 21.7-21.7 21.7 9.7 21.7 21.7-9.7 21.7-21.7 21.7z"></path></svg></li>
+                <li  onclick="showmenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="menu"><g data-name="Layer 2"><g data-name="menu"><rect width="18" height="2" x="3" y="11" rx=".95" ry=".95"></rect><rect width="18" height="2" x="3" y="16" rx=".95" ry=".95"></rect><rect width="18" height="2" x="3" y="6" rx=".95" ry=".95"></rect></g></g></svg></li>
+                <li><a href="{% url 'userprofile'%}"><svg xmlns="http://www.w3.org/2000/svg" width="32.402" height="32"viewBox="0 0 256 256" id="user"><rect width="256" height="256" fill="none"></rect><circle cx="128" cy="96" r="64" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12"></circle><path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="12" d="M30.989,215.99064a112.03731,112.03731,0,0,1,194.02311.002"></path></svg></a></li>
+                <li><a href="{% url 'cart'%}"><svg xmlns="http://www.w3.org/2000/svg" width="32.402" height="32" viewBox="0 0 32.402 32" id="cart"><path d="M6 30a2 2 1080 1 0 4 0 2 2 1080 1 0-4 0zm18 0a2 2 1080 1 0 4 0 2 2 1080 1 0-4 0zM-.058 5a1 1 0 0 0 1 1H3.02l1.242 5.312L6 20c0 .072.034.134.042.204l-1.018 4.58A.997.997 0 0 0 6 26h22.688a1 1 0 0 0 0-2H7.248l.458-2.06c.1.016.19.06.294.06h18.23c1.104 0 1.77-.218 2.302-1.5l3.248-9.964C32.344 8.75 31.106 8 30 8H6c-.156 0-.292.054-.438.088l-.776-3.316A1 1 0 0 0 3.812 4H.942a1 1 0 0 0-1 1zm6.098 5h23.81l-3.192 9.798c-.038.086-.07.148-.094.19-.066.006-.17.012-.334.012H8v-.198l-.038-.194L6.04 10z"></path></svg><div class="cart_count" id="cart">{{ cart_count }}</div></a></li>
+                
+            </ul>
+        </div> 
+        
+        <div class="nav-mobile-item border-box " id="mob-menu" >
+            <ul class="nav-mobile-cont">
+                <li  onclick="myFunction()">
+                    <span>Eras</span>
+                </li>
+                <li  onclick="viynalmenu()">
+                    <span>Viynls</span>
+                </li>
+                <li  onclick="cassestsmenu()">
+                    <span>Cassettes</span>
+                </li>
+                <li  onclick="postermenu()">
+                    <span>Posters</span>
+                </li>
+                <li  onclick="myFunction()">
+                    <span>Collab</span>
+                </li> 
+            </ul>
+        </div>
+    </div>
+</header>

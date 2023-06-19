@@ -1,0 +1,30 @@
+{% load static %}
+<div class="newarrival border-box">
+    <div class="container-title border-box-bottom">
+        <span>NewArrival</span>
+        <span class="arrow"><a href="{% url 'store' 'newarrival' %}"><img src="static/img/arrow.png"/></a></span>
+    </div>
+    <div class="newarrival-cont ">
+      {% for newarrival in newarrivals %}
+        {% if forloop.counter <= 6 %}
+            <a class="box" href="{%url 'product' newarrival.prod_name %}">
+              <div class="grid-box-item"> 
+                  <div class="grid-box-item-front" style="background-color : {{ newarrival.collection.color}}">
+                    <div class="item-img"><img src="{{ newarrival.image1.url }}"></div>
+                    <div class="item-text">
+                      <div class="item-class">{{ newarrival.collection.category}} </div>
+                      <div class="item-txt"> {{ newarrival.prod_name }} </div>
+                      <div class="item-price">Rtg = {{ newarrival.prod_price }}</div>
+                    </div>
+                  </div>
+                  <div class="grid-box-item-back">
+                  </div>
+            
+              </div>
+            </a>
+          {% endif %}
+        {% endfor %}  
+
+    </div>
+  
+</div>

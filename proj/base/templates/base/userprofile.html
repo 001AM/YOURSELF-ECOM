@@ -1,0 +1,130 @@
+{% include 'main.html' %}
+{% block content %}
+<div class="userprof_cont">
+  <div class="sidebar">
+    <div class="side_nav_cont">
+      <ul>
+          <li class="sidenav_comp"><a href="{% url 'userprofile' %}">UserProfile</a></li>
+          <li class="sidenav_comp"><a href="{% url 'order' %}">Order</a></li>
+          <li class="sidenav_comp"><a href="{% url 'contactus' %}">Contact us</a></li>
+          <li class="sidenav_comp"><a href="{% url 'proflogout' %}">Logout</a></li>
+      </ul>
+    </div>
+  
+  </div>
+  <div class="userprof_info">
+    {% if page == 'userprof' %}
+    
+      <span class="container-title">UserProfile</span>
+      <span class="" style="font-size:1rem">Username:{{request.user}}</span>
+      <div class="userprof_form">
+        <form class="form" action="" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {% for field in updateform %}
+          <div class="form_cont">
+            <label>{{field.label}}</label>
+            {{field}}
+          </div>
+          {% endfor %}
+          
+          {% comment %} <div class="sub-btn">
+            <div class="grid-box-text">
+                <div class="grid-box-text-front">
+                  <a class="btn btn--dark" href="{% url 'home'%}">Cancel</a>
+                </div>
+                <div class="grid-box-text-back">
+                </div>
+            </div>
+          </div> {% endcomment %}
+          <div class="sub-btn btm-margin">
+            <div class="grid-box-text">
+                <div class="grid-box-text-front">
+                    <button value="submit">Submit</button>
+                </div>
+                <div class="grid-box-text-back">
+                </div>
+            </div>
+          </div>
+        </form>
+      </div>
+   
+      
+    {% elif  page == 'contactus' %}
+      <div class="contactus">
+        <span class="container-title">Contactus</span>
+        <div class="userprof_form">
+          <form class="form" action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+  
+            {% for field in form %}
+            <div class="form_cont">
+              <label>{{field.label}}</label>
+              {{field}}
+            </div>
+            {% endfor %}
+            
+            <div class="sub-btn btm-margin">
+              <div class="grid-box-text">
+                  <div class="grid-box-text-front">
+                      <button value="submit">Submit</button>
+                  </div>
+                  <div class="grid-box-text-back">
+                  </div>
+              </div>
+            </div>
+          </form>
+
+      </div>
+    {%elif page == 'logout' %} 
+      <div class="proflogout">
+        <span class="container-title">Logout</span><br>
+        <span class="item-text">Come on there are many thing remaining to shop and explore</span><br>
+        <div class="logout">
+          <a href="{% url 'logout' %}" ><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <title>sign-out</title>
+              <path
+                d="M3 0h22c0.553 0 1 0 1 0.553l-0 3.447h-2v-2h-20v28h20v-2h2l0 3.447c0 0.553-0.447 0.553-1 0.553h-22c-0.553 0-1-0.447-1-1v-30c0-0.553 0.447-1 1-1z"
+              ></path>
+              <path
+                d="M21.879 21.293l1.414 1.414 6.707-6.707-6.707-6.707-1.414 1.414 4.293 4.293h-14.172v2h14.172l-4.293 4.293z"
+              ></path>
+            </svg>
+            Logout</a>
+        </div>
+      </div>
+    {%elif page == 'order' %} 
+    <div class="Order">
+      <span class="container-title">Order</span>
+      {% for order in orders.all  %}
+      <div class="order_cont">
+        <div class="ord_id ord_txt">Order Id: {{order.razor_pay_order_id}},</div>
+        <div class="ord_prod ord_txt">
+          Order Product Name:
+          {% for product in order.ord_prod.all %}
+            {{ product.prod_name }},
+          {% endfor %}
+        </div>
+        <div class="ord_created ord_txt">
+          Order Created : 
+          {{order.created}}
+        </div>
+        <div class="sub-btn">
+          <div class="grid-box-text">
+              <div class="grid-box-text-front">
+                  <button value="submit"><a href="{% url 'invoice' order.razor_pay_order_id %}">INVOICE</a></button>
+              </div>
+              <div class="grid-box-text-back">
+              </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>  
+    {%else%}
+      <h1>error</h1>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}

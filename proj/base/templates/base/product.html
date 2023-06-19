@@ -1,0 +1,105 @@
+{% include 'main.html' %}
+{% load static %}
+{% block content %}
+<div class="prod-cont">
+    <div class="prod-img-cont">
+        <div class="prod-img-lg">
+            <div class="grid-prod-box"> 
+                <div class="grid-prod-box-front">
+                {% for prod in prods %}
+                  <div class="item-img" id="main-img"><img src="{{ prod.image1.url }}"></div>          
+                </div>
+                <div class="grid-prod-box-back">
+                </div>
+              
+            </div>
+        </div>
+        <div class="prod-img-sml">
+            <img class="prod-img-sel" src="{{ prod.image1.url }}" onclick="changeImage('{{ prod.image1.url }}')">      
+            <img class="prod-img-sel" src="{{ prod.image2.url }}"onclick="changeImage('{{ prod.image2.url }}')">
+            <img class="prod-img-sel" src="{{ prod.image3.url }}"onclick="changeImage('{{ prod.image3.url }}')">
+        </div>
+</div>
+<div class="prod-info">
+    
+    <div class="prod-txt-cont">
+        <div class="prod-txt">{{ prod.prod_name }}</div>
+        <div class="prod-class">{{ prod.collection.category }}</div>
+        <div class="prod-type">{{ prod.prodtype.product}}</div>
+        <div class="prod-price"> Rtg =  {{ prod.prod_price }} </div>
+    </div>
+    
+    {% comment %} <div class="prod-size-cont">
+        <div class="prod-size-title">
+            <span>SIZE</span>
+        </div>
+        
+        <ul class="prod-size">
+            <div class="grid-box-text "  >
+                <div class="grid-box-text-front"><li class="size-text">S</li>
+                </div>
+                <div class="grid-box-text-back">
+                </div>
+            </div>
+            <div class="grid-box-text "  >
+                <div class="grid-box-text-front"><li class="size-text">M</li>
+                </div>
+                <div class="grid-box-text-back">
+                </div>
+            </div>
+            <div class="grid-box-text "  >
+                <div class="grid-box-text-front"><li class="size-text">X</li>
+                </div>
+                <div class="grid-box-text-back">
+                </div>
+            </div>
+            <div class="grid-box-text "  >
+                <div class="grid-box-text-front"><li class="size-text">XL</li>
+                </div>
+                <div class="grid-box-text-back">
+                </div>
+            </div>
+        </ul>
+    </div>   {% endcomment %}
+    <div class="addcart">
+        <div class="sub-btn" >
+            <div class="grid-box-text">
+                <div class="grid-box-text-front"id="btnwidth">
+                    <a href="{% url 'addtocart' prod.prod_name  %}"><button>ADD TO CART</button></a>
+                </div>
+                <div class="grid-box-text-back">
+                </div>
+            </div>
+          </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+<div class="rcmd-cont">
+<div class="container-title border-box-bottom">
+    <span>You Might Also Like</span>
+    <span class="arrow"><a href="{% url 'store' %}"><img src="{% static 'img/arrow.png' %}"/></a></span>
+</div>
+<div class="newarrival-cont ">
+    {% for newarrival in newarrivals %}
+      {% if forloop.counter <= 6 %}
+          <a class="box" href="{%url 'product' newarrival.prod_name %}">
+            <div class="grid-box-item"> 
+                <div class="grid-box-item-front" style="background-color : {{ newarrival.collection.color}}">
+                  <div class="item-img"><img src="{{ newarrival.image1.url }}"></div>
+                  <div class="item-text">
+                    <div class="item-class">{{ newarrival.collection.category}} </div>
+                    <div class="item-txt"> {{ newarrival.prod_name }} </div>
+                    <div class="item-price">R={{ newarrival.prod_price }}</div>
+                  </div>
+                </div>
+                <div class="grid-box-item-back">
+                </div>
+          
+            </div>
+          </a>
+        {% endif %}
+      {% endfor %}  
+
+  </div>
+{% endblock content %}

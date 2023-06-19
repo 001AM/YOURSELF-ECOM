@@ -1,0 +1,104 @@
+{% include 'main.html' %}
+{% load static%}
+{% block content %}
+    <div class="store-cont">
+        <div class="tool-mobile-cont">
+            <div class="filter tool-box" onclick="filtermobdrop()"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 2" viewBox="0 0 30 30" id="filter"><path fill="#111224" d="M17 11H4A1 1 0 0 1 4 9H17A1 1 0 0 1 17 11zM26 11H22a1 1 0 0 1 0-2h4A1 1 0 0 1 26 11z"></path><path fill="#111224" d="M19.5 13.5A3.5 3.5 0 1 1 23 10 3.5 3.5 0 0 1 19.5 13.5zm0-5A1.5 1.5 0 1 0 21 10 1.5 1.5 0 0 0 19.5 8.5zM26 21H13a1 1 0 0 1 0-2H26A1 1 0 0 1 26 21zM8 21H4a1 1 0 0 1 0-2H8A1 1 0 0 1 8 21z"></path><path fill="#111224" d="M10.5,23.5A3.5,3.5,0,1,1,14,20,3.5,3.5,0,0,1,10.5,23.5Zm0-5A1.5,1.5,0,1,0,12,20,1.5,1.5,0,0,0,10.5,18.5Z"></path></svg>Filter</div>
+            <div class="sortmob tool-box" onclick="sortmobdrop()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="sort"><path d="M10 26.586V2H8V26.586l-3.95-3.95L2.636 24.05l5.657 5.657a1 1 0 0 0 1.414 0l5.657-5.657L13.95 22.636zM29.364 7.95L23.707 2.293a1 1 0 0 0-1.414 0L16.636 7.95 18.05 9.364 22 5.414V30h2V5.414l3.95 3.95z"></path></svg>Sort</div>
+        </div>
+        <div class="sortmob_drop" id="sortmobtl">
+          <form method="get" action="{% url 'store' %}">
+                  {% csrf_token %}
+                  {{ sort_form }}
+                  <input type="hidden" name="q" value="{{ title }}">
+                  <div class="sub-btn">
+                    <div class="grid-box-text" style="z-index:10;position:relative" >
+                      <div class="grid-box-text-front"><button class="filbtn" value="submit">SUBMIT</button>
+                      </div>
+                      <div class="grid-box-text-back">
+                      </div>
+                    </div>
+                  </div>
+          </form>
+        </div>
+        <div class="sortmob_drop" id="filtermobtl">
+          <form method="get" action="{% url 'store' %}">
+                  {% csrf_token %}
+                  {{ filter_form }}
+                  <div class="sub-btn">
+                    <div class="grid-box-text" style="z-index:10;position:relative" >
+                      <div class="grid-box-text-front"><button class="filbtn" value="submit">SUBMIT</button>
+                      </div>
+                      <div class="grid-box-text-back">
+                      </div>
+                    </div>
+                  </div>
+          </form>
+        </div>
+        <div class="store-header">
+            <div class="store-title">{{ title }}</div>
+        </div>
+        
+    
+        <div class="tool-container">
+          <div class="filter"  style="display:flex;flex-direction:column">
+            <div class="tool-box"onclick="filterdrop()"><svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 2" viewBox="0 0 30 30" id="filter"><path fill="#111224" d="M17 11H4A1 1 0 0 1 4 9H17A1 1 0 0 1 17 11zM26 11H22a1 1 0 0 1 0-2h4A1 1 0 0 1 26 11z"></path><path fill="#111224" d="M19.5 13.5A3.5 3.5 0 1 1 23 10 3.5 3.5 0 0 1 19.5 13.5zm0-5A1.5 1.5 0 1 0 21 10 1.5 1.5 0 0 0 19.5 8.5zM26 21H13a1 1 0 0 1 0-2H26A1 1 0 0 1 26 21zM8 21H4a1 1 0 0 1 0-2H8A1 1 0 0 1 8 21z"></path><path fill="#111224" d="M10.5,23.5A3.5,3.5,0,1,1,14,20,3.5,3.5,0,0,1,10.5,23.5Zm0-5A1.5,1.5,0,1,0,12,20,1.5,1.5,0,0,0,10.5,18.5Z"></path></svg><span>Filter</span></div>
+            <div class="sortdrop" id="filtertool" style="border:0.2rem solid black">
+              <form method="get" action="{% url 'search' %}">
+                {% csrf_token %}
+                {{ filter_form }}
+                <input type="hidden" name="s" value="{{ s }}">
+                
+                <div class="sub-btn">
+                  <div class="grid-box-text" style="z-index:10;position:relative" >
+                    <div class="grid-box-text-front"><button class="filbtn" value="submit">SUBMIT</button>
+                    </div>
+                    <div class="grid-box-text-back">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+            <div class="sort"  style="display:flex;flex-direction:column">
+              <div class="tool-box"onclick="sortdrop()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="sort"><path d="M10 26.586V2H8V26.586l-3.95-3.95L2.636 24.05l5.657 5.657a1 1 0 0 0 1.414 0l5.657-5.657L13.95 22.636zM29.364 7.95L23.707 2.293a1 1 0 0 0-1.414 0L16.636 7.95 18.05 9.364 22 5.414V30h2V5.414l3.95 3.95z"></path></svg><span>Sort</span></div>
+              <div class="sortdrop" id="sorttool" style="border:0.2rem solid black">
+                <form method="get" action="{% url 'search' %}">
+                  {% csrf_token %}
+                  {{ sort_form }}
+                  <input type="hidden" name="s" value="{{ s }}">
+                  <div class="sub-btn">
+                    <div class="grid-box-text" style="z-index:10;position:relative" >
+                      <div class="grid-box-text-front"><button class="filbtn" value="submit">SUBMIT</button>
+                      </div>
+                      <div class="grid-box-text-back">
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+        </div>
+        
+        
+        <div class="store-item-cont">
+          {% for store in stores %}
+            <a href="{%url 'product' store.prod_name %}">
+              <div class="grid-box-item"> 
+                  <div class="grid-box-item-front" style="background-color : {{ store.collection.color}}">
+                    <div class="item-img"><img src="{{ store.image1.url }}"></div>
+                    <div class="item-text">
+                      <div class="item-class">{{ store.collection.category}} </div>
+                      <div class="item-txt"> {{ store.prod_name }} </div>
+                      <div class="item-price">Rtg = {{ store.prod_price }}</div>
+                    </div>
+                  </div>
+                  <div class="grid-box-item-back">
+                  </div>
+            
+              </div>
+            </a>
+          {% endfor %}     
+        </div>
+    </div>
+{% endblock content %}

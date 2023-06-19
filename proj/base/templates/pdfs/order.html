@@ -1,0 +1,39 @@
+Dear {{ user.username }},
+
+Thank you for shopping with us at YOURSELF! We are thrilled to inform you that your order was successfully placed and processed. This email serves as your order confirmation, providing you with the details of your purchase.
+
+Order Details:
+Order ID: {{ ord.razor_pay_order_id }}
+Order Date: {{ ord.created }}
+Total Amount: {{ total_price }}
+Product(s) Purchased:
+{% for product in ord.ord_prod.all %}
+    {{ product }}
+{% endfor %}
+
+Billing and Shipping Information:
+{{ user.name }},
+{{ user.house }},
+{{ user.area }},{{user.landmark}}
+{{ user.pincode }},
+{{ user.town }}, {{ user.state }}
+{{ user.country }}
+
+If you have any questions or concerns regarding your order, please don't hesitate to reach out to our customer support team at [Customer Support Contact]. We are here to assist you in any way we can.
+
+Order Tracking:
+To track the status of your order, you can visit our website and log in to your account. Once logged in, you can access your order history and find the current status and shipping details.
+
+Shipping Updates:
+Once your order has been shipped, you will receive another email with the tracking number and any additional relevant information. Please allow some time for the tracking information to become available.
+
+We value your trust in us and appreciate your business. Our team is working diligently to ensure that your order is processed and delivered to you as quickly as possible. If there are any further updates or changes to your order, we will notify you promptly.
+
+Thank you once again for choosing YOURSELF. We hope you enjoy your new purchase! Should you have any feedback or suggestions, we'd love to hear from you.
+
+Best regards,
+
+[Your Name]
+[Your Position]
+[Ecommerce Website]
+[Contact Information]

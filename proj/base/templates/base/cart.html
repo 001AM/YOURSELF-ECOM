@@ -1,0 +1,163 @@
+{% include 'main.html' %}
+{% load static%}
+{% block content %}
+<div class="cart_container btm-margin">
+    <div class="ord_cont">
+        <div class="cart_ord">
+            <div class="t_price">
+                Total Price:Rs{{total_price}}
+            </div>
+            
+            <div class="cart_prod_ord">
+                <div class="sub-btn" >
+                    <div class="grid-box-text">
+                        <div class="grid-box-text-front"id="btnwidth">
+                            
+                            <button type="button"  data-toggle="modal" data-target="#exampleModalCenter">
+                                ORDER
+                            </button>
+                        </div>
+                        <div class="grid-box-text-back">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Confirm Detail</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form" id="customer-details-form" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                    
+                                {% for field in update_form %}
+                                    <div class="form_cont">
+                                    <label>{{field.label}}</label>
+                                        {{field}}
+
+                                    </div>
+                                {% endfor %}
+                               
+                                
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="rzp-button1" onclick="submitFormAndOrder()">ORDER</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for item in cartitems  %}
+    <div class="cart_prod ">
+        <div class="cart_prod_img">
+            <a href="{%url 'product' item.product.prod_name %}">
+            <img src={{ item.product.image1.url }}/>
+            </a>
+        </div>
+        <div class="cart_prod_info">
+            <div class="cart_prod_name">
+                <span>Product name:</span>
+                <span>{{item.product.prod_name}}</span>
+            </div>
+            <div class="cart_prod_price">
+                <span>Product Price:</span>
+                <span>Rs{{item.product.prod_price}}</span>
+            </div>
+        </div>
+        <div id="emtdiv">
+        </div>
+        <div class="cart_prod_del">
+            <div class="sub-btn" >
+                <div class="grid-box-text">
+                    <div class="grid-box-text-front"id="btnwidth">
+                        <a href={% url 'remove_from_cart' item.id  %}><button>DELETE</button></a>
+                    </div>
+                    <div class="grid-box-text-back">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var amount = "{{ payment.amount }}";  // Amount in paise
+    var currency = "INR";
+    var orderID = "{{ payment.id }}";
+
+    function submitFormAndOrder() {
+        var form = document.getElementById('customer-details-form');
+        var formData = new FormData(form);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action);
+        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                
+                if (form.checkValidity()) {
+                    // Form is valid, proceed with Razorpay payment
+                    initiateRazorpayPayment();
+                } else {
+                    // Form is invalid, trigger the browser's default form validation
+                    form.reportValidity();
+                }
+            }
+        };
+        xhr.send(formData);
+    }
+    function initiateRazorpayPayment() {
+        var options = {
+            key: "{{ YOUR_RAZORPAY_API_KEY }}",
+            amount: amount,
+            currency: currency,
+            name: "Your Store",
+            description: "Payment for your order",
+            order_id: orderID,
+            handler: function (response) {
+                if (response.razorpay_payment_id) {
+                    // Payment successful, redirect to the success page
+                    window.location.href = "{% url 'payment' %}";
+                } else {
+                    // Payment failed or incomplete, redirect to the failure page
+                    window.location.href = "{% url 'paymentfailure' %}";
+                }
+            },
+            prefill: {
+                name: "{{ request.user.get_full_name }}",
+                email: "{{ request.user.email }}",
+            },
+        };
+        var rzp = new Razorpay(options);
+        rzp.on('payment.failed', function (response) {
+            // Handle the payment failure response here
+            console.log(response.error.code);
+            console.log(response.error.description);
+            console.log(response.error.source);
+            console.log(response.error.step);
+            console.log(response.error.reason);
+            console.log(response.error.metadata.order_id);
+            console.log(response.error.metadata.payment_id);
+        });
+        rzp.open();
+    }
+</script>
+
+
+
+
+{% endblock content %}

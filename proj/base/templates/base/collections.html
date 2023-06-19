@@ -1,0 +1,23 @@
+{% load static %}
+<div class="collections border-box">
+    <div class="container-title border-box-bottom">
+        <span>Collections</span>
+        <span class="arrow"><a href="{% url 'store' %}"><img src="{% static 'img/arrow.png' %}"/></a></span>
+    </div>
+    <div class="collections-cont ">
+      {% for collection in collections %}  
+        <a class="box" href="{% url 'store' collection.category %}">
+          <div class="grid-box-item">
+              <div class="grid-box-item-front" style=" background-color : {{ collection.color }}">
+                <div class="item-img"><img src="{{ collection.image.url }}"></div>
+                <div class="item-text">{{ collection.category }}</div>
+              </div>
+              <div class="grid-box-item-back">
+              </div>
+          </div>
+        </a>
+      {% endfor %}
+        
+    </div>
+    
+</div>
