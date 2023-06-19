@@ -114,7 +114,7 @@
         } else {
             phoneNumberInput.setCustomValidity('');
         }
-        
+
         var xhr = new XMLHttpRequest();
         xhr.open('POST', form.action);
         xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
