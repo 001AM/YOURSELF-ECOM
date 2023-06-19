@@ -103,6 +103,18 @@
         var form = document.getElementById('customer-details-form');
         var formData = new FormData(form);
 
+        var phoneNumberInput = document.getElementById('id_phone');
+        var phoneNumber = phoneNumberInput.value;
+
+        // Regular expression pattern for a valid phone number
+        var phoneNumberPattern = /^\d{10}$/;
+
+        if (!phoneNumberPattern.test(phoneNumber)) {
+            phoneNumberInput.setCustomValidity('Please enter a valid phone number.');
+        } else {
+            phoneNumberInput.setCustomValidity('');
+        }
+        
         var xhr = new XMLHttpRequest();
         xhr.open('POST', form.action);
         xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
