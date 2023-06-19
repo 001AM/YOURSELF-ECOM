@@ -24,10 +24,12 @@ cssutils==2.7.1
 debugpy==1.6.6
 decorator==5.1.1
 distlib==0.3.6
-Django==2.2.11
+dj-database-url==2.0.0
+Django==4.2.2
 django-appconf==1.0.5
 django-binary-database-files==1.0.10
 django-cors-headers==3.14.0
+django-heroku==0.3.1
 django-imagekit==4.1.0
 django-multiselectfield==0.1.12
 django-simple-mail==2.3.5
@@ -86,6 +88,7 @@ premailer==3.10.0
 prompt-toolkit==3.0.38
 protobuf==4.22.1
 psutil==5.9.4
+psycopg2==2.9.6
 psycopg2-binary==2.9.6
 pure-eval==0.2.2
 pyasn1==0.4.8
@@ -144,5 +147,6 @@ virtualenvwrapper-win==1.2.7
 wcwidth==0.2.6
 webencodings==0.5.1
 Werkzeug==2.2.3
+whitenoise==6.5.0
 wrapt==1.14.1
 xhtml2pdf==0.2.11
