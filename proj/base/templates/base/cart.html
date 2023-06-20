@@ -2,7 +2,14 @@
 {% load static%}
 {% block content %}
 <div class="cart_container btm-margin">
+    {% if total_price == 0 %}
+        <div class="pay_error_cont">
+            No Item Added Yet!
+        </div>
+        
+    {% else %}
     <div class="ord_cont">
+    
         <div class="cart_ord">
             <div class="t_price">
                 Total Price:Rs{{total_price}}
@@ -91,6 +98,7 @@
         </div>
     </div>
     {% endfor %}
+    {% endif %}
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
