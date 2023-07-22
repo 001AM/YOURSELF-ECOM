@@ -1,0 +1,14 @@
+<div class="rating_num">
+    <input type="radio"  name="rating" value="1" id="rating1"><label for="rating1" class="rating">1</label><br>
+    <input type="radio"  name="rating" value="2" id="rating2"><label for="rating2" class="rating">2</label><br>
+    <input type="radio"  name="rating" value="3" id="rating3"><label for="rating3" class="rating">3</label><br>
+    <input type="radio"  name="rating" value="4" id="rating4"><label for="rating4" class="rating">4</label><br>
+    <input type="radio"  name="rating" value="5" id="rating5"><label for="rating5" class="rating">5</label><br>
+</div>
+<!-- your_app/templates/your_app/rating_input.html -->
+{% comment %} <div class="rating_num">
+    {% for radio in widget %}
+        {{ radio.tag }}
+        <label for="{{ radio.id_for_label }}" class="rating">{{ radio.choice_label }}</label><br>
+    {% endfor %}
+</div> {% endcomment %}

@@ -2,9 +2,10 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import PermissionsMixin
 from .managers import CustomUserManager
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class LowercaseEmailField(models.EmailField):
@@ -80,14 +81,16 @@ class Store(models.Model):
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     prodtype = models.ForeignKey(Prodtype, on_delete=models.CASCADE)
     created = models.DateTimeField(default=timezone.now)
+    rating = models.IntegerField(default=5, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    description = models.CharField(max_length=300,default=" ")
     
-
     class Meta:
         ordering = ['created']
 
     def __str__(self):
         return self.prod_name
     
+
 class Cart(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     is_paid = models.BooleanField(default=False)
@@ -122,3 +125,13 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.user}Order{self.razor_pay_order_id} "
+    
+class UserReview(models.Model):
+    username = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    rating = models.IntegerField(default=5, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    message = models.CharField(max_length=255,blank = True, null=True)
+    prod_name = models.ForeignKey(Store, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.username} - {self.prod_name}"
+    

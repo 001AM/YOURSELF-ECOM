@@ -26,7 +26,14 @@
         <div class="prod-txt">{{ prod.prod_name }}</div>
         <div class="prod-class">{{ prod.collection.category }}</div>
         <div class="prod-type">{{ prod.prodtype.product}}</div>
-        <div class="prod-price"> Rtg =  {{ prod.prod_price }} </div>
+        <div class="prod-rating">
+            {% for rating in ratings %}
+                
+                    <img src="{% static 'img/rating.png' %}" alt="Rating">
+               
+            {% endfor %}
+        </div>
+        <div class="prod-price"> Price =  {{ prod.prod_price }} </div>
     </div>
     
     {% comment %} <div class="prod-size-cont">
@@ -72,6 +79,10 @@
             </div>
           </div>
     </div>
+    <div class="desc">
+        <span class="desc-title">Description:<span><br>
+        <span class="desc-cont">{{prod.description}}</span>
+    </div>
     {% endfor %}
 </div>
 </div>
@@ -90,7 +101,7 @@
                   <div class="item-text">
                     <div class="item-class">{{ newarrival.collection.category}} </div>
                     <div class="item-txt"> {{ newarrival.prod_name }} </div>
-                    <div class="item-price">R={{ newarrival.prod_price }}</div>
+                    <div class="item-price">RS={{ newarrival.prod_price }}</div>
                   </div>
                 </div>
                 <div class="grid-box-item-back">
@@ -100,6 +111,81 @@
           </a>
         {% endif %}
       {% endfor %}  
+</div>
+</div>
+<div class="review-section">
+    <div class="container-title border-box-bottom">
+        <span>Review</span>
+    </div>
+    {% for review in reviews %}
+        <div class="message-cont">
+            <div class="user-img"><img src="{% static 'img/user.svg' %}" alt="usermg"/></div>
+            <div class="username">{{ review.username }}</div>
+            <div class="rating">
+                <span class="desc-title">Rating:</span>
+                {% load filters %}
+                {% for _ in review.rating|times %}
+                    <img src="{% static 'img/rating.png' %}" alt="Rating">
+                {% endfor %}
+            </div>
+            <div class="desc-cont">
+                {{ review.message }}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="add_cmt">
+        <button type="button" class="btn btn-primary addbtn" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Comment</button>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Review</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="form" id="customer-review-form" action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in review_form %}
+                                <div class="form_cont">
+                                <label>{{field.label}}</label>
+                                    {{field}}
 
-  </div>
+                                </div>
+                    {% endfor %}
+                    
+                    <!-- Submit button -->
+                    <button type="submit" class="btn-primary revbtn">SUBMIT</button>
+                    
+                </form>
+                
+            </div>
+            
+        </div>
+        </div>
+    </div>
+</div>
+{% comment %} <script>
+    function submitForm() {
+        var form = document.getElementById('customer-review-form');
+        var formData = new FormData(form);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action);
+        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                
+                if (form.checkValidity()) {
+                    // Form is valid, proceed with Razorpay payment
+                   
+                } else {
+                    // Form is invalid, trigger the browser's default form validation
+                    form.reportValidity();
+                }
+            }
+        };
+        xhr.send(formData);
+    }
+</script> {% endcomment %}
 {% endblock content %}

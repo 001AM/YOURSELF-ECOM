@@ -13,7 +13,6 @@ from decouple import config
 import os
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['181f-103-225-132-121.ngrok-free.app','localhost',]
 
 
 # Application definition
@@ -64,8 +63,11 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
+        
     },
 ]
+
+TEMPLATE_LOADERS = ('django.template.loaders.app_directories.load_template_source',)
 
 WSGI_APPLICATION = 'proj.wsgi.application'
 
@@ -118,8 +120,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'static')
 ]
-STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
-
+STATIC_ROOT=os.path.join(BASE_DIR,'assests') 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
 

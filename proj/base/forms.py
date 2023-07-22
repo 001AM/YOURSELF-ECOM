@@ -1,4 +1,4 @@
-from .models import Collection,Store,CustomUser
+from .models import Collection,Store,CustomUser,UserReview
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.core.validators import RegexValidator
@@ -75,3 +75,13 @@ class ChangeDetailForm(UserChangeForm):
         super().__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].required = True
+
+class RatingInput(forms.RadioSelect):
+    template_name = 'base/rating_input.html'  
+
+class CustomerReviewForm(forms.ModelForm):
+    rating = forms.ChoiceField(choices=[(i, str(i)) for i in range(1, 6)], widget=RatingInput)
+    message = forms.CharField(widget=forms.Textarea(attrs={'class': 'txtarea', 'placeholder':'Write your review here ...'}))
+    class Meta:
+        model = UserReview
+        fields = ['rating', 'message']

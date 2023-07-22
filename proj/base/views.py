@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404
-
-from .models import Collection,Store,Prodtype,CustomUser,CartItem,Cart,Order
-from .forms import SortForm,FilterForm,CustomUserCreationForm,CustomUserChangeForm,ContactForm,ChangeDetailForm
+from django.db.models import Avg
+from .models import Collection,Store,Prodtype,CustomUser,CartItem,Cart,Order,UserReview
+from .forms import SortForm,FilterForm,CustomUserCreationForm,CustomUserChangeForm,ContactForm,ChangeDetailForm,CustomerReviewForm
 from django.db.models import Q
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
@@ -52,8 +52,10 @@ def store(request,pk=None,pk1=None):
             stores = Store.objects.filter(collection__category=q)
             stores = stores.order_by(sort_by)
             pk = q 
+            title=pk
         else:
             pk  = ''
+            title=pk
             stores = Store.objects.all()
             stores = stores.order_by(sort_by)
     elif form2.is_valid():
@@ -67,24 +69,29 @@ def store(request,pk=None,pk1=None):
             stores = stores.filter(prodtype__product=choice_by)
             
             pk = q 
+            title=pk
         else:
             pk  = ''
+            title=pk
             stores = Store.objects.all()
             stores = stores.filter(prodtype__product=choice_by)
     else:
         if 'newarrival' == pk and not pk1:
             stores = Store.objects.order_by('-created')
             pk = ''
+            title= pk
         elif pk and not pk1:
             stores = Store.objects.filter(collection__category=pk)
+            title = pk
         elif pk1 and not pk:
             stores = Store.objects.filter(prodtype__product=pk1)
         elif pk and pk1:
             stores = Store.objects.filter(collection__category=pk, prodtype__product=pk1)
-        
+            title=pk+' '+pk1
         else:
             stores = Store.objects.order_by('?')
             pk = ''
+            title=pk
 
         
     form1 = SortForm()
@@ -104,7 +111,7 @@ def store(request,pk=None,pk1=None):
     context ={
         'stores': stores,
         'collections': collections,
-        'title':pk,
+        'title':title,
         'pk1' : pk1,
         'form1':form1,
         'form2':form2,
@@ -135,7 +142,8 @@ def product(request,pk):
     prods = Store.objects.filter(prod_name__exact=pk)
     collections = Collection.objects.all() 
     stores = Store.objects.order_by('?')
-    
+    store_reviews = UserReview.objects.filter(prod_name__prod_name=pk)
+    reviews = store_reviews.order_by('?')[:3]
     newarrivals = stores.exclude(prod_name=pk)
     if request.user.is_authenticated:
         try:
@@ -147,14 +155,52 @@ def product(request,pk):
             pass
     else:
         cart_count="0"
+    if request.method == 'POST':
+        form = CustomerReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)  # Create an instance of the form but don't save it yet
+            review.username= request.user# Set the username using request.user
+            review.prod_name = Store.objects.get(prod_name=pk)  # Set the product name (replace with appropriate logic)
+            review.save()  # Save the form data to the database
+            return redirect(product,pk)  # Redirect to a success page or any other URL after successful submission
+    else:
+        form = CustomerReviewForm()
+    # Calculate the average rating
+    average_rating = store_reviews.aggregate(Avg('rating'))['rating__avg']
+
+    # Check if the average rating exists
+    if average_rating is not None:
+        # Convert the average rating to a scale of 5
+        average_rating_out_of_5 = (average_rating / 5.0) * 5
+
+        # Update the product's average rating
+        for prod in prods:
+            prod.rating = average_rating_out_of_5
+            prod.save()
+    
+    # Create a list to store the ratings
+    rate = []
+    prods = Store.objects.filter(prod_name__exact=pk)
+    # Iterate over each store object in the queryset
+    for store in prods:
+        # Access the rating attribute of each store object
+        rate.append(store.rating)
+    ratings= int(''.join(map(str,rate)))
+    ratings= range(ratings)
+
     context ={
         'stores':stores,
         'prods': prods,
         'collections': collections,
         'newarrivals': newarrivals,
         'cart_count':cart_count,
+        'ratings':ratings,
+        'reviews':reviews,
+        'review_form':form
+        
     }
     return render(request,template,context)
+
 
 def search(request):
     template ='base/search.html'
