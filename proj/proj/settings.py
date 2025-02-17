@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['181f-103-225-132-121.ngrok-free.app','localhost',]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

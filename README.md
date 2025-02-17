@@ -17,7 +17,7 @@ This project is a simple e-commerce application built using Django, with Razorpa
 ## Installation
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.10+
 - Razorpay account and API keys
 
 ### Setup Instructions
@@ -40,10 +40,13 @@ This project is a simple e-commerce application built using Django, with Razorpa
 4. **Configure environment variables:**
     Create a `.env` file in the root directory and add the following:
     ```env
-    SECRET_KEY=your_secret_key
+    SECRET_KEY=
     DEBUG=True
-    RAZORPAY_KEY_ID=your_razorpay_key_id
-    RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+    RAZORPAY_API_KEY=
+    RAZORPAY_API_SECRET=
+    EMAIL_HOST_USER=
+    EMAIL_HOST_PASSWORD=
+    DEFAULT_FROM_EMAIL=''
     ```
 
 5. **Apply database migrations:**
